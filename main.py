@@ -18,9 +18,9 @@ if fs.exists("lastid"):
 else:
 	lasturl = "nope screw you"
 
-r = requests.get(PREQUEL_API+"/api/latest")
-r.raise_for_status()
-r = r.json()
+resp = requests.get(PREQUEL_API+"/api/latest")
+resp.raise_for_status()
+r = resp.json()
 if lasturl==r["link"]:
 	sys.exit(0)
 webhook = {}
@@ -32,6 +32,6 @@ embed["description"] = "```"+unidecode(unescape(r["summary"]))+"```\nUpdated {}\
 webhook["embeds"][0] = embed
 headers = {"Content-Type":"application/json"}
 data = json.dumps(webhook)
-r = requests.post(WEBHOOK_URL,data=data,headers=headers)
+p = requests.post(WEBHOOK_URL,data=data,headers=headers)
 with open("lastid","w") as f:
 	f.write(r["link"])
